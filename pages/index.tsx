@@ -18,7 +18,7 @@ const Home: NextPage = () => {
         </h1>
 
         <p className={styles.description}>
-         Dave Jones' personal ratings for all slices he&apos;s tried in NYC.
+        My personal ratings for all slices I&apos;ve tried in NYC.
         </p>
 
         <p className={styles.description}>
