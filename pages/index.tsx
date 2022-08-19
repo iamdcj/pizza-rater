@@ -17,7 +17,7 @@ const Home: NextPage = ({ ratings }) => {
         <h1 className={styles.title}>🗽🍕 Rate Your Slice 🍕🗽 </h1>
 
         <p className={styles.description}>
-          My personal ratings for all slices I&apos;ve tried in NYC.
+          My personal ratings for all the slices I&apos;ve tried in NYC.
         </p>
 
         <h3 className={styles.description}>Current Leaderboard</h3>
@@ -31,18 +31,7 @@ const Home: NextPage = ({ ratings }) => {
         </ul>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{" "}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      
     </div>
   );
 };
