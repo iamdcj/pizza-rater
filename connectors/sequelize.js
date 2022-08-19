@@ -1,6 +1,8 @@
 import Sequelize, { DataTypes } from "sequelize";
 
-const sequelize = new Sequelize("postgres://localhost:5432/rateyourslice");
+console.log(process.env.DB_CONNECTION);
+
+const sequelize = new Sequelize(process.env.DB_CONNECTION);
 
 export const Rating = sequelize.define(
   "Rating",

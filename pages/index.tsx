@@ -39,7 +39,7 @@ const Home: NextPage = ({ ratings = [] }) => {
 
 export async function getServerSideProps() {
   let ratings = [];
-  
+
   try {
     await sequelize.authenticate();
 
@@ -51,12 +51,14 @@ export async function getServerSideProps() {
     if (ratings?.length < 1) {
       ratings = [
         {
+          id: 1,
           name: "L'Industrie Pizzeria",
           location: "Brooklyn",
           slice: "Fig Jam & Bacon",
           rating: 8.5,
         },
         {
+          id: 2,
           name: "Paulie Gee's",
           location: "Madison Square Garden",
           slice: "Cheese",
@@ -64,13 +66,9 @@ export async function getServerSideProps() {
         },
       ];
     }
-
-    console.log("here", typeof ratings);
   } catch (error) {
     console.log(error.message);
   }
-
-  console.log(ratings);
 
   return {
     props: { ratings },
