@@ -2,23 +2,9 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import sequelize, { Rating } from "../connectors/sequelize";
 
-const data = [
-  {
-    name: "L'Industrie Pizzeria",
-    location: "Brooklyn",
-    slice: "Fig Jam & Bacon",
-    rating: 8.5,
-  },
-  {
-    name: "Paulie Gee's",
-    location: "Madison Square Garden",
-    slice: "Cheese",
-    rating: 8,
-  },
-];
-
-const Home: NextPage = () => {
+const Home: NextPage = ({ ratings }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -34,12 +20,12 @@ const Home: NextPage = () => {
           My personal ratings for all slices I&apos;ve tried in NYC.
         </p>
 
-        <p className={styles.description}>Current Leaderboard</p>
+        <h3 className={styles.description}>Current Leaderboard</h3>
 
         <ul>
-          {data.map(({ name, location, slice, rating }, i) => (
-            <li key={`${name}-${i}-${rating}`}>
-              {name}, {location} - {slice} - {rating}
+          {ratings.map(({ id, name, location, slice, rating }, i) => (
+            <li key={id}>
+              🍕 {name}, {location} - {slice} Slice - {rating}
             </li>
           ))}
         </ul>
@@ -60,5 +46,35 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  let ratings = [
+    {
+      name: "L'Industrie Pizzeria",
+      location: "Brooklyn",
+      slice: "Fig Jam & Bacon",
+      rating: 8.5,
+    },
+    {
+      name: "Paulie Gee's",
+      location: "Madison Square Garden",
+      slice: "Cheese",
+      rating: 8,
+    },
+  ];
+
+  try {
+    await sequelize.authenticate();
+
+    ratings = await Rating.findAll();
+    ratings = JSON.stringify(ratings);
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  return {
+    props: { ratings: JSON.parse(ratings) },
+  };
+}
 
 export default Home;
