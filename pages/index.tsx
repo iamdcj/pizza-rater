@@ -4,7 +4,19 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import sequelize, { Rating } from "../connectors/sequelize";
 
-const Home: NextPage = ({ ratings = [] }) => {
+interface Rating {
+  id: string;
+  name: string;
+  location: string;
+  slice: string;
+  rating: number;
+}
+
+interface Home {
+  ratings: Rating[];
+}
+
+const Home: NextPage<Home> = ({ ratings = [] }) => {
   console.log("client", ratings);
 
   return (
@@ -38,7 +50,7 @@ const Home: NextPage = ({ ratings = [] }) => {
 };
 
 export async function getServerSideProps() {
-  let ratings = [];
+  let ratings: any[] | string = [];
 
   try {
     await sequelize.authenticate();
@@ -67,7 +79,7 @@ export async function getServerSideProps() {
       ];
     }
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 
   return {
