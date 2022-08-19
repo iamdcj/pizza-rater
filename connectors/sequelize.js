@@ -1,38 +1,49 @@
 import Sequelize, { DataTypes } from "sequelize";
 
-console.log(process.env.DB_CONNECTION);
+let sequelize = null;
+export let Rating = null;
 
-const sequelize = new Sequelize(process.env.DB_CONNECTION);
+try {
+  sequelize = new Sequelize("rateyourslice", {
+    host: "localhost",
+    dialect: "postgres",
+    operatorAliases: false,
+  });
+} catch (error) {
+  console.log(error);
+}
 
-export const Rating = sequelize.define(
-  "Rating",
-  {
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
+if (sequelize) {
+  Rating = sequelize.define(
+    "Rating",
+    {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      slice: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      rating: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
     },
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    slice: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    location: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    rating: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-  },
-  {
-    tableName: "ratings",
-    timestamps: false,
-  }
-);
+    {
+      tableName: "ratings",
+      timestamps: false,
+    }
+  );
+}
 
 (async function () {
   try {

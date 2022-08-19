@@ -53,6 +53,10 @@ export async function getServerSideProps() {
   let ratings: any[] | string = [];
 
   try {
+    if (!sequelize) {
+      throw new Error("no connection establised");
+    }
+    
     await sequelize.authenticate();
 
     const ratingsData = await Rating.findAll();
