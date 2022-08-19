@@ -4,7 +4,9 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import sequelize, { Rating } from "../connectors/sequelize";
 
-const Home: NextPage = ({ ratings }) => {
+const Home: NextPage = ({ ratings = [] }) => {
+  console.log("client", ratings);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -21,48 +23,57 @@ const Home: NextPage = ({ ratings }) => {
         </p>
 
         <h3 className={styles.description}>Current Leaderboard</h3>
-
-        <ul>
-          {ratings.map(({ id, name, location, slice, rating }, i) => (
-            <li key={id}>
-              🍕 {name}, {location} - {slice} Slice - {rating}
-            </li>
-          ))}
-        </ul>
+        {ratings?.length > 0 && (
+          <ul>
+            {ratings.map(({ id, name, location, slice, rating }, i) => (
+              <li key={id}>
+                🍕 {name}, {location} - {slice} Slice - {rating}
+              </li>
+            ))}
+          </ul>
+        )}
       </main>
-
-      
     </div>
   );
 };
 
 export async function getServerSideProps() {
-  let ratings = [
-    {
-      name: "L'Industrie Pizzeria",
-      location: "Brooklyn",
-      slice: "Fig Jam & Bacon",
-      rating: 8.5,
-    },
-    {
-      name: "Paulie Gee's",
-      location: "Madison Square Garden",
-      slice: "Cheese",
-      rating: 8,
-    },
-  ];
-
+  let ratings = [];
+  
   try {
     await sequelize.authenticate();
 
-    ratings = await Rating.findAll();
-    ratings = JSON.stringify(ratings);
+    const ratingsData = await Rating.findAll();
+
+    ratings = JSON.stringify(ratingsData);
+    ratings = JSON.parse(ratings);
+
+    if (ratings?.length < 1) {
+      ratings = [
+        {
+          name: "L'Industrie Pizzeria",
+          location: "Brooklyn",
+          slice: "Fig Jam & Bacon",
+          rating: 8.5,
+        },
+        {
+          name: "Paulie Gee's",
+          location: "Madison Square Garden",
+          slice: "Cheese",
+          rating: 8,
+        },
+      ];
+    }
+
+    console.log("here", typeof ratings);
   } catch (error) {
     console.log(error.message);
   }
 
+  console.log(ratings);
+
   return {
-    props: { ratings: JSON.parse(ratings) },
+    props: { ratings },
   };
 }
 
