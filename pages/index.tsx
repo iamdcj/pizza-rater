@@ -28,7 +28,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>🍕 Rate Your Slice 🍕</h1>
+        <h1 className={styles.title}>🗽🍕 Rate Your Slice 🍕🗽 </h1>
 
         <p className={styles.description}>
           My personal ratings for all slices I&apos;ve tried in NYC.
