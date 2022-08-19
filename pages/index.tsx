@@ -1,7 +1,22 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+
+const data = [
+  {
+    name: "L'Industrie Pizzeria",
+    location: "Brooklyn",
+    slice: "Fig Jam & Bacon",
+    rating: 8.5,
+  },
+  {
+    name: "Paulie Gee's",
+    location: "Madison Square Garden",
+    slice: "Cheese",
+    rating: 8,
+  },
+];
 
 const Home: NextPage = () => {
   return (
@@ -13,17 +28,21 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          🍕 Rate Your Slice 🍕
-        </h1>
+        <h1 className={styles.title}>🍕 Rate Your Slice 🍕</h1>
 
         <p className={styles.description}>
-        My personal ratings for all slices I&apos;ve tried in NYC.
+          My personal ratings for all slices I&apos;ve tried in NYC.
         </p>
 
-        <p className={styles.description}>
-         Current Leaderboard
-        </p>
+        <p className={styles.description}>Current Leaderboard</p>
+
+        <ul>
+          {data.map(({ name, location, slice, rating }, i) => (
+            <li key={`${name}-${i}-${rating}`}>
+              {name}, {location} - {slice} - {rating}
+            </li>
+          ))}
+        </ul>
       </main>
 
       <footer className={styles.footer}>
@@ -32,14 +51,14 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
+          Powered by{" "}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
