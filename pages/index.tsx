@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import sequelize, { Rating } from "../connectors/sequelize";
 
 interface Rating {
   id: string;
@@ -53,16 +52,9 @@ export async function getServerSideProps() {
   let ratings: any[] | string = [];
 
   try {
-    if (!sequelize) {
-      throw new Error("no connection establised");
-    }
-    
-    await sequelize.authenticate();
+    const ratingsData = await fetch("/api/ratings");
 
-    const ratingsData = await Rating.findAll();
-
-    ratings = JSON.stringify(ratingsData);
-    ratings = JSON.parse(ratings);
+    ratings = await ratingsData.json();
 
     if (ratings?.length < 1) {
       ratings = [

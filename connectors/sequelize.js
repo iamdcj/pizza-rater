@@ -46,6 +46,10 @@ if (sequelize) {
 }
 
 (async function () {
+  if (!rating) {
+    return;
+  }
+
   try {
     await Rating.sync();
   } catch (error) {
