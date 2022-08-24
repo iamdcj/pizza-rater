@@ -62,7 +62,7 @@ export async function getServerSideProps() {
       throw new Error("Fallback to dummy data");
     }
   } catch (error) {
-    console.error(error.message);
+    console.error(error);
 
     ratings = [
       {
