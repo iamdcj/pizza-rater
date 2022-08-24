@@ -1,59 +1,54 @@
 import Sequelize, { DataTypes } from "sequelize";
 
 let sequelize = null;
-export let Rating = null;
 
 try {
-  sequelize = new Sequelize("rateyourslice", {
-    host: "localhost",
-    dialect: "postgres",
-    operatorAliases: false,
-  });
+  sequelize = new Sequelize("postgres://localhost:5432/rateyourslice");
 } catch (error) {
   console.log(error);
 }
 
-if (sequelize) {
-  Rating = sequelize.define(
-    "Rating",
-    {
-      id: {
-        type: DataTypes.UUID,
-        primaryKey: true,
-      },
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      slice: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      location: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      rating: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
+export const Rating = sequelize.define(
+  "Rating",
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
     },
-    {
-      tableName: "ratings",
-      timestamps: false,
-    }
-  );
-}
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    slice: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    location: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    rating: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  },
+  {
+    tableName: "ratings",
+    timestamps: false,
+  }
+);
 
 (async function () {
-  if (!rating) {
+  console.log(1, Rating);
+
+  if (!Rating) {
     return;
   }
 
   try {
     await Rating.sync();
   } catch (error) {
-    console.log(error.message);
+    console.log("Sync error: ", error.message);
   }
 })();
 

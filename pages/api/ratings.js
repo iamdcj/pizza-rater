@@ -5,8 +5,10 @@ export default async function handler(req, res) {
 
   try {
     if (!sequelize) {
-      throw new Error("no connection establised");
+      throw new Error("No connection establised");
     }
+
+
 
     await sequelize.authenticate();
 
@@ -19,6 +21,6 @@ export default async function handler(req, res) {
   } catch (error) {
     console.log(error);
 
-    res.status(400).send("Somethin went wrong");
+    res.status(400).send("Something went wrong");
   }
 }

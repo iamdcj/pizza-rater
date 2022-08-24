@@ -16,8 +16,6 @@ interface Home {
 }
 
 const Home: NextPage<Home> = ({ ratings = [] }) => {
-  console.log("client", ratings);
-
   return (
     <div className={styles.container}>
       <Head>
@@ -52,30 +50,36 @@ export async function getServerSideProps() {
   let ratings: any[] | string = [];
 
   try {
-    const ratingsData = await fetch("/api/ratings");
+    const ratingsData = await fetch("http://localhost:3000/api/ratings");
+
+    if (!ratingsData.ok) {
+      throw new Error("Unable to fetch ratings");
+    }
 
     ratings = await ratingsData.json();
 
-    if (ratings?.length < 1) {
-      ratings = [
-        {
-          id: 1,
-          name: "L'Industrie Pizzeria",
-          location: "Brooklyn",
-          slice: "Fig Jam & Bacon",
-          rating: 8.5,
-        },
-        {
-          id: 2,
-          name: "Paulie Gee's",
-          location: "Madison Square Garden",
-          slice: "Cheese",
-          rating: 8,
-        },
-      ];
+    if (ratings.length < 1) {
+      throw new Error("Fallback to dummy data");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error.message);
+
+    ratings = [
+      {
+        id: 1,
+        name: "L'Industrie Pizzeria",
+        location: "Brooklyn",
+        slice: "Fig Jam & Bacon",
+        rating: 8.5,
+      },
+      {
+        id: 2,
+        name: "Paulie Gee's",
+        location: "Madison Square Garden",
+        slice: "Cheese",
+        rating: 8,
+      },
+    ];
   }
 
   return {
